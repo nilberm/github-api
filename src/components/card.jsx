@@ -5,25 +5,24 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import "./card.css";
 
 const Card = () => {
-  const nameUser = document.getElementById("inputText");
-
   const [errorState, setErrorState] = useState(false);
   const [userDate, setUserDate] = useState({});
+  const [nameUser, setNameUser] = useState("");
 
   useEffect(() => {
     setUserDate({});
   }, []);
   async function getGithubProfile() {
     try {
-      const resp = await fetch(
-        "https://api.github.com/users/" + nameUser.value
-      );
+      const resp = await fetch(`https://api.github.com/users/${nameUser}`);
       const data = await resp.json();
       setUserDate(data);
+      if (data.message === "Not Found") {
+        window.alert("Enter an existing user please!");
+      }
     } catch (err) {
       setErrorState(true);
-      console.log(err);
-      window.alert("Enter an existing user please!");
+      window.alert("This is not supposed to happen");
     }
   }
 
@@ -40,7 +39,6 @@ const Card = () => {
     if (userDate.avatar_url === undefined || errorState === true) {
       return "https://git-hub-api-nu.vercel.app/profile.svg";
     } else {
-      console.log(userDate);
       return `https://avatars.githubusercontent.com/u/${userDate.id}?v=4`;
     }
   }
@@ -55,6 +53,7 @@ const Card = () => {
             id="inputText"
             type="text"
             placeholder="Enter your GitHub profile"
+            onChange={(e) => setNameUser(e.target.value)}
           />
           <button id="btn" onClick={getGithubProfile}>
             Search
@@ -62,22 +61,38 @@ const Card = () => {
         </form>
       </div>
       <div id="social-medias">
-        <FontAwesomeIcon
-          className="social-icons"
-          icon={faLinkedin}
-        ></FontAwesomeIcon>
-        <FontAwesomeIcon
-          className="social-icons"
-          icon={faGithub}
-        ></FontAwesomeIcon>
-        <FontAwesomeIcon
-          className="social-icons"
-          icon={faEnvelope}
-        ></FontAwesomeIcon>
-        <FontAwesomeIcon
-          className="social-icons"
-          icon={faPhone}
-        ></FontAwesomeIcon>
+        <a
+          href="https://www.linkedin.com/in/nilberm/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FontAwesomeIcon
+            className="social-icons"
+            icon={faLinkedin}
+          ></FontAwesomeIcon>
+        </a>
+        <a href="https://github.com/nilberm/" target="_blank" rel="noreferrer">
+          <FontAwesomeIcon
+            className="social-icons"
+            icon={faGithub}
+          ></FontAwesomeIcon>
+        </a>
+        <a href="mailto:nilber16@outlook.com" target="_blank" rel="noreferrer">
+          <FontAwesomeIcon
+            className="social-icons"
+            icon={faEnvelope}
+          ></FontAwesomeIcon>
+        </a>
+        <a
+          href="https://api.whatsapp.com/send?phone=+5585989493607&text=Olá! Gostaria de entrar em contato."
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FontAwesomeIcon
+            className="social-icons"
+            icon={faPhone}
+          ></FontAwesomeIcon>
+        </a>
       </div>
     </div>
   );
