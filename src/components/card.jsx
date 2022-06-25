@@ -12,6 +12,7 @@ const Card = () => {
   useEffect(() => {
     setUserDate({});
   }, []);
+
   async function getGithubProfile() {
     try {
       const resp = await fetch(`https://api.github.com/users/${nameUser}`);
